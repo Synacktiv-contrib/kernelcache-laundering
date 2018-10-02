@@ -284,7 +284,7 @@ def decode_PAC(d, insn):
 
 class Aarch64PACHook(idaapi.IDP_Hooks):
 	CUSTOM_INSTRUCTIONS = {idaapi.ARM_hlt, idaapi.ARM_ret, idaapi.ARM_blr, idaapi.ARM_br, idaapi.ARM_eret,idaapi.ARM_ldr}
-	indent = 16
+	INDENT = 16
 	def ev_ana_insn(self, outctx):
 		return outctx.size if decode_PAC(idaapi.get_dword(outctx.ea), outctx) else 0
 
@@ -297,9 +297,7 @@ class Aarch64PACHook(idaapi.IDP_Hooks):
 		if outctx.insn.itype in self.CUSTOM_INSTRUCTIONS:
 			mnem = OP_NAMES.get(ord(outctx.insn.insnpref), None)
 			if mnem is not None:
-				if not idaapi.get_inf_structure().is_graph_view():
-					self.indent = idaapi.get_inf_structure().indent
-				outctx.out_custom_mnem(mnem, self.indent)
+				outctx.out_custom_mnem(mnem, self.INDENT)
 				return 1
 		return 0
 
