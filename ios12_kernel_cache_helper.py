@@ -137,6 +137,7 @@ class IOS12KernelcacheHelper(idaapi.plugin_t):
 	comment = "iOS12 kernelcache helper - (C) Synacktiv"
 	wanted_hotkey = ""
 	help = "Runs transparently"
+	idbhook = None
 
 	def init(self):
 		if idaapi.ph_get_id() != idaapi.PLFM_ARM or idaapi.cvar.inf.filetype != idaapi.f_MACHO:
@@ -150,7 +151,7 @@ class IOS12KernelcacheHelper(idaapi.plugin_t):
 		pass
 
 	def term(self):
-		if self.idbhook:
+		if self.idbhook is not None:
 			self.idbhook.unhook()
 
 def PLUGIN_ENTRY():
